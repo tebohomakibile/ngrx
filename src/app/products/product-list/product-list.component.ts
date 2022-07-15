@@ -14,7 +14,7 @@ import { ProductService } from '../product.service';
 export class ProductListComponent implements OnInit, OnDestroy {
   pageTitle = 'Products';
   errorMessage: string;
-
+ 
   displayCode: boolean;
 
   products: Product[];
@@ -50,7 +50,11 @@ export class ProductListComponent implements OnInit, OnDestroy {
     this.store.dispatch({
       type: '[Product] Toggle Product Code'
     })
-    // '[product] Toggle Product Code' is an action to dispatch. I really do not like having to type out the action like this as this approach is prone to case and spelling errors.
+    /*
+      '[product] Toggle Product Code' is an action to dispatch.
+      I really do not like having to type out the action like this,
+      as this approach is prone to case and spelling errors.
+    */
   }
 
   newProduct(): void {

@@ -17,7 +17,7 @@ const productRoutes: Routes = [
   imports: [
     SharedModule,
     RouterModule.forChild(productRoutes),
-    StoreModule.forFeature('products', productReducer)
+    StoreModule.forFeature('products', productReducer), // 'products is a slice of the application state. When reading data from the state, we select the slice ad read from that slice'
   ],
   declarations: [
     ProductShellComponent,

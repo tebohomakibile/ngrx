@@ -34,6 +34,12 @@ export class ProductListComponent implements OnInit, OnDestroy {
       next: (products: Product[]) => this.products = products,
       error: err => this.errorMessage = err
     });
+
+    this.store.select('products').subscribe(products => {
+      if(products) {
+        this.displayCode = products.showProductCode;
+      }
+    })
   }
 
   ngOnDestroy(): void {
@@ -41,10 +47,10 @@ export class ProductListComponent implements OnInit, OnDestroy {
   }
 
   checkChanged(): void {
-    // this.displayCode = !this.displayCode;
     this.store.dispatch({
       type: '[Product] Toggle Product Code'
     })
+    // '[product] Toggle Product Code' is an action to dispatch. I really do not like having to type out the action like this as this approach is prone to case and spelling errors.
   }
 
   newProduct(): void {

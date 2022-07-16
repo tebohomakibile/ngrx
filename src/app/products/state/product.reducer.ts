@@ -17,9 +17,16 @@ export interface ProductState {
   products: Product[];
 }
 
+const initialState: ProductState = {
+  showProductCode: true,
+  currentProduct: null,
+  products: []
+}
+
 export const productReducer = createReducer<ProductState>(
   // Specify the initial store state
-  {showProductCode: true} as ProductState,
+  // {showProductCode: true} as ProductState,
+  initialState,
   //Define an action for the reducer to dispatch
   on(createAction('[Product] Toggle Product Code'), (state): ProductState => {
     console.log('Original State', JSON.stringify(state));

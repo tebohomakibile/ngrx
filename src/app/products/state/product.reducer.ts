@@ -1,7 +1,8 @@
-import { createAction, createFeatureSelector, createReducer, createSelector, on } from "@ngrx/store";
+import { createFeatureSelector, createReducer, createSelector, on } from "@ngrx/store";
 
 import { Product } from "../product";
 import * as AppState from "src/app/state/app.state";
+import * as ProductActions from "./product.action";
 
 /*
   Because feature modules are lazy loaded, we extend
@@ -23,6 +24,15 @@ const initialState: ProductState = {
   products: []
 }
 
+const initialProduct: Product = {
+  id: 0,
+  productName: '',
+  productCode: 'new',
+  description: '',
+  starRating: 0
+}
+
+
 /*
   Create a feature selector. this means I am slicing only
   the products state from the global application state
@@ -33,17 +43,36 @@ export const getShowProductCode = createSelector(getProductFeatureState, state =
 export const getCurrentProduct = createSelector(getProductFeatureState, state => state.currentProduct);
 export const getProducts = createSelector(getProductFeatureState, state => state.products);
 
+
 export const productReducer = createReducer<ProductState>(
   // Specify the initial store state
   // {showProductCode: true} as ProductState,
   initialState,
   //Define an action for the reducer to dispatch
-  on(createAction('[Product] Toggle Product Code'), (state): ProductState => {
+  on(ProductActions.toggleProductCode, (state): ProductState => {
     console.log('Original State', JSON.stringify(state));
 
     return {
       ...state,
       showProductCode: !state.showProductCode
+    }
+  }),
+  on(ProductActions.setCurrentProduct, (state, action): ProductState => {
+    return {
+      ...state,
+      currentProduct: action.product
+    }
+  }),
+  on(ProductActions.clearCurrentProduct, (state): ProductState => {
+    return {
+      ...state,
+      currentProduct: null
+    }
+  }),
+  on(ProductActions.initializeCurrentProduct, (state): ProductState => {
+    return {
+      ...state,
+      currentProduct: initialProduct
     }
   })
 )

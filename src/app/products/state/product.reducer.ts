@@ -1,8 +1,14 @@
-import { createFeatureSelector, createReducer, createSelector, on } from "@ngrx/store";
+import {
+  createFeatureSelector,
+  createReducer,
+  createSelector,
+  on,
+} from '@ngrx/store';
 
-import { Product } from "../product";
-import * as AppState from "src/app/state/app.state";
-import * as ProductActions from "./product.action";
+import { Product } from '../product';
+import * as AppState from 'src/app/state/app.state';
+import * as ProductActions from './product.action';
+import { Action } from 'rxjs/internal/scheduler/Action';
 
 /*
   Because feature modules are lazy loaded, we extend
@@ -21,17 +27,16 @@ export interface ProductState {
 const initialState: ProductState = {
   showProductCode: true,
   currentProduct: null,
-  products: []
-}
+  products: [],
+};
 
 const initialProduct: Product = {
   id: 0,
   productName: '',
   productCode: 'new',
   description: '',
-  starRating: 0
-}
-
+  starRating: 0,
+};
 
 /*
   Create a feature selector. this means I am slicing only
@@ -39,10 +44,18 @@ const initialProduct: Product = {
 */
 const getProductFeatureState = createFeatureSelector<ProductState>('products');
 
-export const getShowProductCode = createSelector(getProductFeatureState, state => state.showProductCode);
-export const getCurrentProduct = createSelector(getProductFeatureState, state => state.currentProduct);
-export const getProducts = createSelector(getProductFeatureState, state => state.products);
-
+export const getShowProductCode = createSelector(
+  getProductFeatureState,
+  (state) => state.showProductCode
+);
+export const getCurrentProduct = createSelector(
+  getProductFeatureState,
+  (state) => state.currentProduct
+);
+export const getProducts = createSelector(
+  getProductFeatureState,
+  (state) => state.products
+);
 
 export const productReducer = createReducer<ProductState>(
   // Specify the initial store state
@@ -54,25 +67,31 @@ export const productReducer = createReducer<ProductState>(
 
     return {
       ...state,
-      showProductCode: !state.showProductCode
-    }
+      showProductCode: !state.showProductCode,
+    };
   }),
   on(ProductActions.setCurrentProduct, (state, action): ProductState => {
     return {
       ...state,
-      currentProduct: action.product
-    }
+      currentProduct: action.product,
+    };
   }),
   on(ProductActions.clearCurrentProduct, (state): ProductState => {
     return {
       ...state,
-      currentProduct: null
-    }
+      currentProduct: null,
+    };
   }),
   on(ProductActions.initializeCurrentProduct, (state): ProductState => {
     return {
       ...state,
-      currentProduct: initialProduct
-    }
+      currentProduct: initialProduct,
+    };
+  }),
+  on(ProductActions.loadProductsSuccess, (state, action): ProductState => {
+    return {
+      ...state,
+      products: action.products,
+    };
   })
-)
+);
